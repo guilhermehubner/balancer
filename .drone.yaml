@@ -1,0 +1,16 @@
+build:
+  image: golang:1.6
+  commands:
+    - cd $GOPATH/src/github.com/StudioSol/balancer
+    - cp etc/database/dev/cert/* /usr/local/cert/
+    - go get github.com/smartystreets/goconvey/convey
+    - go get github.com/pborman/uuid
+    - ROOT_DIR=$(pwd) go test -cover $(go list ./... | grep -v /vendor/)
+    - go build
+clone:
+  path: github.com/StudioSol/balancer
+notify:
+  slack:
+    webhook_url: https://hooks.slack.com/services/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
+    channel: deploy
+    username: drone
